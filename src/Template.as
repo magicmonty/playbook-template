@@ -3,7 +3,7 @@ package {
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     
-    import qnx.ui.Theme.ThemeGlobals;
+    import qnx.ui.theme.ThemeGlobals;
     
     // The following metadata specifies the size and properties of the canvas that
     // this application should occupy on the BlackBerry PlayBook screen.
