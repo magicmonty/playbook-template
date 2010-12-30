@@ -1,0 +1,7 @@
+/*.bar
+/*.tmp
+/bin-debug/*
+/bin/*
+/deploy/*
+ant-build-BarExtractForBuild/*
+build.properties

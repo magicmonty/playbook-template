@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/2.5">
+	<id>${app.domain}.${app.name}</id>
+	<filename>${app.name}</filename>
+	<name>${app.name}</name>
+	<versionNumber>${app.version}</versionNumber>
+	<copyright>${app.copyright}</copyright> 
+	<initialWindow>
+		<content>${app.name}.swf</content>
+	</initialWindow>
+</application>
