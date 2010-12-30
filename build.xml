@@ -118,7 +118,7 @@
 		</exec>
 	</target>	
 	
-	<target name="debug" depends="build-debug,-prepare,-getApplicationId">
+	<target name="debug" depends="build-debug,-prepare">
 		<exec executable="${build.airpackager}" failonerror="true">
 			<arg value="-target"/>
 			<arg value="bar-debug"/>
