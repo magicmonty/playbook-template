@@ -27,8 +27,12 @@
 	<target name="bootstrap" unless="app.unconfigured">
 		<mkdir dir="${app.name}" />
 		<expandingcopy todir="${app.name}">
-			<fileset dir="${dir.template}" excludes=".git/" />
+			<fileset dir="${dir.template}">
+				<exclude name=".git/" />
+				<exclude name="src/blackberry-tablet-icon.png" />
+			</fileset>
 		</expandingcopy>
+		<copy file="${dir.template}/src/blackberry-tablet-icon.png" todir="${app.name}/src" />
 		<delete dir="${dir.template}" failonerror="false"/>
 		<delete file="default.properties" failonerror="false"/>
 		<delete dir=".git" failonerror="false"/>
