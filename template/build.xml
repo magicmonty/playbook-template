@@ -1,0 +1,188 @@
+<project name="PlayBookApp" default="build-debug" basedir="."> 
+	
+	<property file="build.properties"/>
+	<property file="default.properties"/>
+	
+	<property name="suffix.bat" value=".bat"/>
+	<property name="suffix.exe" value=".exe"/>
+	<property name="build.airpackager" value="${build.playbook.sdk}blackberry-airpackager${suffix.bat}"/>
+	<property name="build.amxmlc" value="${build.playbook.sdk}amxmlc${suffix.bat}"/>
+	<property name="build.blackberry-deploy" value="${build.playbook.sdk}blackberry-deploy${suffix.bat}"/>
+	<property name="build.adl" value="${build.playbook.sdk}adl${suffix.exe}"/>
+
+	<target name="clean">
+		<delete dir="ant-build-BarExtractForBuild" failonerror="false"/>
+		<delete dir="bin" failonerror="false"/>
+		<delete dir="deploy" failonerror="false"/>
+	</target>
+
+	<target name="package" depends="build-release,-prepare">
+		<exec executable="${build.airpackager}" failonerror="true">
+			<arg value="-target"/>
+			<arg value="bar"/>
+			<arg value="-package"/>
+			<arg value="${dir.deploy}${app.name}.bar"/>
+			<arg value="-C"/>
+			<arg value="${dir.bin}"/>
+			<arg value="${dir.bin}${app.name}-app.xml"/>
+			<arg value="${dir.bin}${app.name}.swf"/>
+			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}res"/>
+		</exec>
+	</target>
+	
+	<target name="package-debug" depends="build-debug,-prepare">
+		<exec executable="${build.airpackager}" failonerror="true">
+			<arg value="-target"/>
+			<arg value="bar-debug"/>
+			<arg value="-package"/>
+			<arg value="${dir.deploy}${app.name}.bar"/>
+			<arg value="-C"/>
+			<arg value="${dir.bin}"/>
+			<arg value="${dir.bin}${app.name}-app.xml"/>
+			<arg value="${dir.bin}${app.name}.swf"/>
+			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}res"/>
+		</exec>
+	</target>
+
+	<target name="build-debug">
+		<exec executable="${build.amxmlc}" failonerror="true">
+			<arg value="-compiler.debug"/>
+			<arg value="-output"/>
+			<arg value="${dir.bin}${app.name}.swf"/>
+			<arg value="--"/>
+			<arg value="${src.main}"/>
+		</exec>
+	</target>
+	
+	<target name="build-release">
+		<exec executable="${build.amxmlc}" failonerror="true">
+			<arg value="-compiler.optimize"/>
+			<arg value="-output"/>
+			<arg value="${dir.bin}${app.name}.swf"/>
+			<arg value="--"/>
+			<arg value="${src.main}"/>
+		</exec>
+	</target>
+	
+	<target name="deploy">
+		<exec executable="${build.blackberry-deploy}" failonerror="true">
+			<arg value="-installApp"/>
+			<arg value="-debugHost"/>
+			<arg value="${simulator.hostip}"/>
+			<arg value="-device"/>
+			<arg value="${simulator.ip}"/>
+			<arg value="-package"/>
+			<arg value="${dir.deploy}${app.name}.bar"/>
+		</exec>		
+	</target>
+	
+	<target name="uninstall" depends="-getApplicationId">
+		<exec executable="${build.blackberry-deploy}" failonerror="true">
+			<arg value="-uninstallApp"/>
+			<arg value="-device"/>
+			<arg value="${simulator.ip}"/>
+			<arg value="-package-name"/>
+			<arg value="${app.packagename}"/>
+			<arg value="-package-id"/>
+			<arg value="${app.id}"/>
+		</exec>		
+	</target>
+	
+	<target name="run" depends="-getApplicationId">
+		<exec executable="${build.blackberry-deploy}" failonerror="true">
+			<arg value="-launchApp"/>
+			<arg value="-debugHost"/>
+			<arg value="${simulator.hostip}"/>
+			<arg value="-device"/>
+			<arg value="${simulator.ip}"/>
+			<arg value="-package-name"/>
+			<arg value="${app.packagename}"/>
+			<arg value="-package-id"/>
+			<arg value="${app.id}"/>
+		</exec>
+	</target>
+	
+	<target name="debug" depends="build-debug,-prepare">
+		<exec executable="${build.airpackager}" failonerror="true">
+			<arg value="-target"/>
+			<arg value="bar-debug"/>
+			<arg value="-package"/>
+			<arg value="${dir.deploy}${app.name}.bar"/>
+			<arg value="-launchApp"/>
+			<arg value="-installApp"/>
+			<arg value="-debugHost"/>
+			<arg value="${simulator.hostip}"/>
+			<arg value="-device"/>
+			<arg value="${simulator.ip}"/>
+			<arg value="-C"/>
+			<arg value="${dir.bin}"/>
+			<arg value="${dir.bin}${app.name}-app.xml"/>
+			<arg value="${dir.bin}${app.name}.swf"/>
+			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}res"/>
+		</exec>
+	</target>
+
+	<!-- internal helpers -->
+	<target name="-prepare" depends="-deploydir.check,-makedeploydir,-resdir.check,-copy.resdir">
+		<copy file="${dir.src}${icon}" todir="${dir.bin}"/>
+		<copy file="${dir.src}${app.name}-app.xml" todir="${dir.bin}"/>
+	</target>
+	
+	<target name="-makedeploydir" unless="-deploydir.exists">
+	    <mkdir dir="${dir.deploy}" />
+	</target>
+	
+	<target name="-deploydir.check">
+		<condition property="deploydir.exists">
+			<available file="${dir.deploy}"/>
+		</condition>	
+	</target>
+	
+	<target name="-copy.resdir" if="resdir.exists">
+		<copy todir="${dir.bin}/res">
+			 <fileset dir="${dir.src}res">
+				<exclude name="**/*.svg"/>
+			 </fileset>
+		</copy>
+	</target>
+
+	<target name="-resdir.check">
+		<condition property="resdir.exists">
+			<available file="${dir.src}/res/"/>
+		</condition>
+	</target>
+	
+	<target name="-getApplicationId" depends="-extractBarManifest">
+		<loadfile property="app.id" srcFile="ant-build-BarExtractForBuild/META-INF/MANIFEST.MF">
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.LineContains">
+				  <param type="contains" value="Package-Id"/>
+				</filterreader>		    			
+				<tokenfilter>
+					<replaceregex pattern="Package-Id: " replace="" flags="i"/>				
+				</tokenfilter>
+				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>	
+			</filterchain>
+		</loadfile>
+		<loadfile property="app.packagename" srcFile="ant-build-BarExtractForBuild/META-INF/MANIFEST.MF">
+			<filterchain>
+				<filterreader classname="org.apache.tools.ant.filters.LineContains">
+				  <param type="contains" value="Package-Name"/>
+				</filterreader>		    			
+				<tokenfilter>
+					<replaceregex pattern="Package-Name: " replace="" flags="i"/>				
+				</tokenfilter>
+				<filterreader classname="org.apache.tools.ant.filters.StripLineBreaks"/>	
+			</filterchain>
+		</loadfile>
+		<delete dir="ant-build-BarExtractForBuild"/>
+	</target>
+	<target name="-extractBarManifest">
+		<delete dir="ant-build-BarExtractForBuild" failonerror="false"/>
+		<mkdir dir="ant-build-BarExtractForBuild"/>
+		<unzip src="${dir.deploy}${app.name}.bar" dest="ant-build-BarExtractForBuild"/>	
+	</target>			
+</project>
