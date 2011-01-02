@@ -27,6 +27,7 @@
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
 	</target>
@@ -44,6 +45,7 @@
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
 	</target>
@@ -123,6 +125,7 @@
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
 	</target>
@@ -131,6 +134,7 @@
 	<target name="-prepare" depends="-deploydir.check,-makedeploydir,-resdir.check,-copy.resdir">
 		<copy file="${dir.src}${icon}" todir="${dir.bin}"/>
 		<copy file="${dir.src}${app.name}-app.xml" todir="${dir.bin}"/>
+		<copy file="${dir.src}blackberry-tablet.xml" todir="${dir.bin}"/>
 	</target>
 	
 	<target name="-makedeploydir" unless="-deploydir.exists">
