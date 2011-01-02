@@ -54,8 +54,6 @@ Usage of the ANT script in the project
 - Target *package-debug*
 
   - builds the project with "build-debug" and packages the project in debug mode to a .bar-File in the directory "deploy"
-    
-    **Note:** This is currently not working, the blackberry-airpackager seems to package a project alway as release, if you don't run it directly from the airpackager in the simulator. The option "-target bar-debug" seems to have no effect here
 
 - Target *build-debug*
 

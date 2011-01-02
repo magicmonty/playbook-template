@@ -37,7 +37,6 @@
 			<arg value="bar-debug"/>
 			<arg value="-package"/>
 			<arg value="${dir.deploy}${app.name}.bar"/>
-			<arg value="bar-debug"/>
 			<arg value="-connect"/>
 			<arg value="${simulator.ip}"/>
 			<arg value="-C"/>
