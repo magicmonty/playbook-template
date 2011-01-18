@@ -27,6 +27,7 @@
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}${splash}"/>
 			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
@@ -40,11 +41,14 @@
 			<arg value="${dir.deploy}${app.name}.bar"/>
 			<arg value="-connect"/>
 			<arg value="${simulator.ip}"/>
+			<arg value="-password"/>
+			<arg value="${simulator.password}"/>
 			<arg value="-C"/>
 			<arg value="${dir.bin}"/>
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}${splash}"/>
 			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
@@ -77,6 +81,8 @@
 			<arg value="${simulator.hostip}"/>
 			<arg value="-device"/>
 			<arg value="${simulator.ip}"/>
+			<arg value="-password"/>
+			<arg value="${simulator.password}"/>
 			<arg value="-package"/>
 			<arg value="${dir.deploy}${app.name}.bar"/>
 		</exec>		
@@ -87,6 +93,8 @@
 			<arg value="-uninstallApp"/>
 			<arg value="-device"/>
 			<arg value="${simulator.ip}"/>
+			<arg value="-password"/>
+			<arg value="${simulator.password}"/>
 			<arg value="-package-name"/>
 			<arg value="${app.packagename}"/>
 			<arg value="-package-id"/>
@@ -101,6 +109,8 @@
 			<arg value="${simulator.hostip}"/>
 			<arg value="-device"/>
 			<arg value="${simulator.ip}"/>
+			<arg value="-password"/>
+			<arg value="${simulator.password}"/>
 			<arg value="-package-name"/>
 			<arg value="${app.packagename}"/>
 			<arg value="-package-id"/>
@@ -120,11 +130,14 @@
 			<arg value="${simulator.hostip}"/>
 			<arg value="-device"/>
 			<arg value="${simulator.ip}"/>
+			<arg value="-password"/>
+			<arg value="${simulator.password}"/>
 			<arg value="-C"/>
 			<arg value="${dir.bin}"/>
 			<arg value="${dir.bin}${app.name}-app.xml"/>
 			<arg value="${dir.bin}${app.name}.swf"/>
 			<arg value="${dir.bin}${icon}"/>
+			<arg value="${dir.bin}${splash}"/>
 			<arg value="${dir.bin}blackberry-tablet.xml"/>
 			<arg value="${dir.bin}res"/>
 		</exec>
@@ -133,6 +146,7 @@
 	<!-- internal helpers -->
 	<target name="-prepare" depends="-deploydir.check,-makedeploydir,-resdir.check,-copy.resdir">
 		<copy file="${dir.src}${icon}" todir="${dir.bin}"/>
+		<copy file="${dir.src}${splash}" todir="${dir.bin}"/>
 		<copy file="${dir.src}${app.name}-app.xml" todir="${dir.bin}"/>
 		<copy file="${dir.src}blackberry-tablet.xml" todir="${dir.bin}"/>
 	</target>

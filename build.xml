@@ -30,9 +30,13 @@
 			<fileset dir="${dir.template}">
 				<exclude name=".git/" />
 				<exclude name="src/blackberry-tablet-icon.png" />
+				<exclude name="src/splashscreen.png" />
+				<exclude name="src/build.xml" />
 			</fileset>
 		</expandingcopy>
 		<copy file="${dir.template}/src/blackberry-tablet-icon.png" todir="${app.name}/src" />
+		<copy file="${dir.template}/src/splashscreen.png" todir="${app.name}/src" />
+		<copy file="${dir.template}/build.xml" todir="${app.name}" />
 		<delete dir="${dir.template}" failonerror="false"/>
 		<delete file="default.properties" failonerror="false"/>
 		<delete dir=".git" failonerror="false"/>

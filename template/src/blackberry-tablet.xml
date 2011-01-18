@@ -8,4 +8,5 @@
   <icon>
   	<image>blackberry-tablet-icon.png</image>
   </icon>
+  <splashscreen>splashscreen.png</splashscreen>
 </qnx>
